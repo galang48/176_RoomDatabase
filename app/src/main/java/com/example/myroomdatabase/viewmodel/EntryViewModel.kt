@@ -7,25 +7,29 @@ import androidx.lifecycle.ViewModel
 import com.example.myroomdatabase.repositori.RepositoriSiswa
 import com.example.myroomdatabase.room.Siswa
 
-class EntryViewModel(private val repositoriSiswa: RepositoriSiswa) : ViewModel() {
 
-    // Berisi status Siswa saat ini
+class EntryViewModel(private val repositoriSiswa: RepositoriSiswa): ViewModel() {
+
+    /**
+     * Berisi status Siswa saat ini
+     */
     var uiStateSiswa by mutableStateOf(UIStateSiswa())
         private set
 
-    // Fungsi untuk memvalidasi input
-    private fun validasiInput(detailSiswa: DetailSiswa = uiStateSiswa.detailSiswa): Boolean {
-        return with(detailSiswa) {
+    /* Fungsi untuk memvalidasi input */
+    private fun validasiInput(uiState: DetailSiswa = uiStateSiswa.detailSiswa): Boolean {
+        return with(uiState) {
             nama.isNotBlank() && alamat.isNotBlank() && telpon.isNotBlank()
         }
     }
 
-    fun updateUiState(detailSiswa: DetailSiswa) {
+    fun updateUIState(detailSiswa: DetailSiswa) {
         uiStateSiswa =
-            UIStateSiswa(detailSiswa = detailSiswa, isEntryValid = validasiInput(detailSiswa))
+            UIStateSiswa(detailSiswa = detailSiswa, isEntryValid =
+                validasiInput(detailSiswa))
     }
 
-    // Fungsi untuk menyimpan data yang di-entry
+    /* Fungsi untuk menyimpan data yang di-entry */
     suspend fun saveSiswa() {
         if (validasiInput()) {
             repositoriSiswa.insertSiswa(uiStateSiswa.detailSiswa.toSiswa())
@@ -33,7 +37,9 @@ class EntryViewModel(private val repositoriSiswa: RepositoriSiswa) : ViewModel()
     }
 }
 
-// Mewakili Status UI untuk Siswa
+/**
+ * Mewakili Status UI untuk Siswa.
+ */
 data class UIStateSiswa(
     val detailSiswa: DetailSiswa = DetailSiswa(),
     val isEntryValid: Boolean = false
@@ -43,10 +49,10 @@ data class DetailSiswa(
     val id: Int = 0,
     val nama: String = "",
     val alamat: String = "",
-    val telpon: String = "",
+    val telpon: String = ""
 )
 
-// Fungsi untuk mengkonversi data input ke data dalam tabel sesuai jenis datanya
+/* Fungsi untuk mengkonversi data input ke data dalam tabel sesuai jenis datanya */
 fun DetailSiswa.toSiswa(): Siswa = Siswa(
     id = id,
     nama = nama,

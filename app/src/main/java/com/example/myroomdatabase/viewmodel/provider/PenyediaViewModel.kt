@@ -14,7 +14,6 @@ import com.example.myroomdatabase.viewmodel.HomeViewModel
 
 object PenyediaViewModel {
     val Factory = viewModelFactory {
-
         initializer {
             HomeViewModel(aplikasiSiswa().container.repositoriSiswa)
         }

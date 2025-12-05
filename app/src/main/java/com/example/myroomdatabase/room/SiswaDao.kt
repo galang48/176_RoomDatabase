@@ -1,6 +1,7 @@
 package com.example.myroomdatabase.room
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -16,6 +17,11 @@ interface SiswaDao {
 
     @Query("SELECT * FROM Tblsiswa WHERE id = :id")
     fun getSiswa(id: Int): Flow<Siswa>
+
+    @Delete
+    suspend fun delete(siswa: Siswa)
+
+
 
 
 }
